@@ -15,7 +15,7 @@ public class Lotto_process {
 	private Lotto_number lottonum;
 
 	public Lotto_process() {
-		
+
 	}
 
 	public Lotto_process(Lotto_provide lottoprovide) { // 기본으로 설정된 분석으로 추출함
@@ -29,8 +29,7 @@ public class Lotto_process {
 
 		lottoprovide(readlist, lottoprovide);
 	}
-	
-	
+
 	public void lottoprovide(ArrayList readlist, Lotto_provide lottoprovide) { // 로또 추출기 실행 메소드
 
 		lottonum = lottoprovide.result(readlist); // 결과물
