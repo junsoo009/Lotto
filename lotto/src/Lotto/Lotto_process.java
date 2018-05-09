@@ -20,11 +20,12 @@ public class Lotto_process {
 
 	public Lotto_process() {
 		lottonum = new Lotto_number();
+
+		lottowrite = new Lotto_write_json(); 
+		lottoread = new Lotto_read_json(); 
 	}
 
 	public void lottoprovide() { // 로또 추출기 실행 메소드
-		lottowrite = new Lotto_write_json(); 
-		lottoread = new Lotto_read_json(); 
 		lottoprovide = new Lotto_provide_num(); 
 
 		// lottowrite.first_list_add(); // 로또번호 가져오기 ( 파일 쓰기 )
