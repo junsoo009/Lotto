@@ -12,8 +12,9 @@ public class Lotto_Main {
 
 		Lotto_process lottoprocess = new Lotto_process(lottoprovide); // 로또추출기 생성자
 
-		lottoprocess.lottoprovide(); // 로또추출기 실행
-
+		int[] arr = lottoprocess.getLottonum();
+		for(int i=0; i<arr.length; i++)
+			System.out.print(arr[i] + " ");
 	}
 
 }
