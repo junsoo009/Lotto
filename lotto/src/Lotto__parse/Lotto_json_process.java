@@ -1,4 +1,4 @@
-package Lotto_json_parse;
+package Lotto__parse;
 
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -15,15 +15,14 @@ import Lotto_Number.Lotto_number;
 
 public class Lotto_json_process implements Lotto_json {
 
-	private final int turn = 800; // 800회 이후 로또번호 추출
+	private final int turn = 750; // 800회 이후 로또번호 추출
 	private final int LOTTO = 45;
 
 	private JSONArray lottojson;
-
-	private JSONObject object;
-	private InputStreamReader isr;
-
 	private JSONParser parser;
+	private JSONObject object;
+
+	private InputStreamReader isr;
 
 	private Lotto_number lottonumber;
 	private ArrayList lottoarray;
@@ -42,7 +41,7 @@ public class Lotto_json_process implements Lotto_json {
 		lottojson = new JSONArray();
 		try {
 
-			while (true) {
+			while (true) { // turn 회차 이후 로또번호 저장 
 
 				result = new URL("http://www.nlotto.co.kr/common.do?method=getLottoNumber&drwNo=" + addturn);
 
@@ -50,7 +49,7 @@ public class Lotto_json_process implements Lotto_json {
 
 				object = (JSONObject) JSONValue.parse(isr);
 
-				if ("success".equals(object.get("returnValue"))) {
+				if ("success".equals(object.get("returnValue"))) { // 로또 번호 콘솔 출력
 					System.out.print(addturn + "회차 로또 번호 :");
 					for (int i = 1; i <= 6; i++) {
 						System.out.print(" " + object.get("drwtNo" + i));
@@ -68,6 +67,7 @@ public class Lotto_json_process implements Lotto_json {
 
 			object.clear();
 			isr.close();
+			
 			System.out.println("=======================================================");
 			System.out.println("로또번호 가져오기 완료\n");
 
@@ -94,14 +94,14 @@ public class Lotto_json_process implements Lotto_json {
 
 			JSONArray lottotemp = (JSONArray) parser.parse(new FileReader("Lotto_Info\\lottoinfo.json"));
 
-			for (int i = 0; i < lottotemp.size(); i++) {
+			for (int i = 0; i < lottotemp.size(); i++) { // json 파일 로또번호 가져오기
 				int[] lotto_temp = new int[7];
 				JSONObject json_temp = (JSONObject) lottotemp.get(i);
 
-				lotto_temp[lotto_temp.length - 1] = Integer.parseInt(json_temp.get("bnusNo").toString());
+				lotto_temp[lotto_temp.length - 1] = Integer.parseInt(json_temp.get("bnusNo").toString()); // 보너스번호
 
 				for (int j = 1; j < 7; j++) {
-					lotto_temp[j - 1] = Integer.parseInt(json_temp.get("drwtNo" + j).toString());
+					lotto_temp[j - 1] = Integer.parseInt(json_temp.get("drwtNo" + j).toString()); // 로또 6개 번호
 
 				}
 

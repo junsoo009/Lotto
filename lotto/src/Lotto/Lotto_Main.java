@@ -8,12 +8,11 @@ public class Lotto_Main {
 
 	public static void main(String[] args) {
 
-		Lotto_provide lottoprovide = new Lotto_provide_num(); // 번호 추출 하라는 명령
-
-		Lotto_process lottoprocess = new Lotto_process(lottoprovide); // 로또추출기 생성자
+		Lotto_process lottoprocess = new Lotto_process();
+		lottoprocess.lottoprovide();
 
 		int[] arr = lottoprocess.getLottonum();
-		for(int i=0; i<arr.length; i++)
+		for (int i = 0; i < arr.length; i++)
 			System.out.print(arr[i] + " ");
 	}
 

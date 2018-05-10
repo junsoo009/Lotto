@@ -4,27 +4,27 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import Lotto_Number.Lotto_number;
+import Lotto_Number.Lotto_select_number;
+import Lotto_Number.Lotto_weigh_number;
+import Lotto_analysis.Lotto_analysis;
+import Lotto_analysis.Lotto_analysis_num;
 
 public class Lotto_provide_num implements Lotto_provide {
 
-	final int LOTTO = 46;
-
-	private int wei[]; // 로또번호 가중치
-	private int wei_bns[]; // 보너스번호 가중치
-
-	private int select[]; // 추출할 로또번호
-	private int select_bns[]; // 추출한 보너스 번호
+	private final int LOTTO = 46;
 
 	private Lotto_number lottoresult; // 로또번호 결과
-	
-	public Lotto_provide_num() {
-		wei = new int[LOTTO];
-		wei_bns = new int[LOTTO];
 
-		select = new int[LOTTO];
-		select_bns = new int[LOTTO];
+	private Lotto_analysis lottoanalysis;
+
+	private Lotto_select_number selectnum;
+	private Lotto_weigh_number weinum;
+
+	public Lotto_provide_num() {
 		lottoresult = new Lotto_number();
-		
+
+		lottoanalysis = new Lotto_analysis_num();
+
 	}
 
 	public Lotto_number result(ArrayList lottolist) {
@@ -33,61 +33,59 @@ public class Lotto_provide_num implements Lotto_provide {
 
 		System.out.println(lottolist);
 
-		int cnt = 0, cnt_bns = 0;
+		weinum = lottoanalysis.lotto_weight(lottolist);
+		selectnum = lottoanalysis.lotto_select(lottolist);
 
-		for (int i = 0; i < lottolist.size(); i++) { // 가중치
-			int temp[] = (int[]) lottolist.get(i);
-			wei_bns[(int) temp[6]]++;
-
-			for (int j = 0; j < 6; j++) {
-				wei[(int) temp[j]]++;
-			}
-		}
-
-		for (int i = 1; i < LOTTO; i++) { // 가중치에 따른 로또번호 선택
-			if (wei[i] == 0)
-				select[cnt++] = i;
-			if (wei_bns[i] == 0)
-				select_bns[cnt_bns++] = i;
-
-			System.out.print(wei[i] + " ");
+		for (int i = 1; i < LOTTO; i++) {
+			System.out.print(weinum.getWeight(i) + " ");
 			if (i % 10 == 0)
 				System.out.println();
 		}
 
 		System.out.println();
 		System.out.println("==================  6자리 번호  ==================");
-		for (int i = 0; i < cnt; i++)
-			System.out.print(select[i] + " ");
-		System.out.println("\n");
 
-		System.out.println("==================  보너스 번호  ==================");
-		for (int i = 0; i < cnt_bns; i++)
-			System.out.print(select_bns[i] + " ");
+		for (int i = 0; i < selectnum.getCnt(); i++) {
+			System.out.print(selectnum.getSelct(i) + " ");
+		}
 		System.out.println();
+		System.out.println("==================  보너스 번호  ==================");
+		for (int i = 0; i < selectnum.getCnt_bns(); i++) {
+			System.out.print(selectnum.getSelect_bns(i) + " ");
+		}
+		System.out.println();
+		System.out.println("==================  보너스 번호   가중치 ==================");
 
+		for (int i = 1; i < LOTTO; i++) {
+			System.out.print(weinum.getWeight_bns(i) + " ");
+			if (i % 10 == 0)
+				System.out.println();
+		}
+		System.out.println();
 		int rot = 0;
 		int lottocnt = 0;
 		int bns = 0;
 
 		for (int i = 1; i <= 45; i++) { // 보너스번호 선택
-			if (bns <= wei_bns[i])
-				bns = wei_bns[i];
+
+			if (bns <= weinum.getWeight_bns(i))
+				bns = i;
 		}
+
 		System.out.println("bns = " + bns);
-		System.out.println("===============================================");
+		System.out.println("===============================================\n");
 
 		while (rot < 6) {
-			sort(select, 0, cnt - 1);
+			sort(selectnum.getSelect(), 0, selectnum.getCnt() - 1);
 
 			Random random = new Random();
 
-			int temp = random.nextInt(LOTTO - cnt);
+			int temp = random.nextInt(LOTTO - selectnum.getCnt());
 			System.out.print(temp + " ");
 
-			System.out.println(lottosearch(select, temp, 0, cnt - 1));
+			System.out.println(lottosearch(selectnum.getSelect(), temp, 0, selectnum.getCnt() - 1));
 
-			if (!lottosearch(select, temp, 0, cnt - 1) && temp != 0
+			if (!lottosearch(selectnum.getSelect(), temp, 0, selectnum.getCnt() - 1) && temp != 0
 					&& !lottosearch(lottoresult.getLottonum(), temp, 0, lottocnt - 1)) {
 
 				lottoresult.setLottonum(temp, lottocnt++);
@@ -98,6 +96,7 @@ public class Lotto_provide_num implements Lotto_provide {
 		}
 
 		lottoresult.setLottonum(bns, lottocnt++);
+
 		for (int i = 0; i < lottocnt; i++) {
 
 			if (i == lottoresult.getLottonum().length - 1) {
@@ -106,7 +105,7 @@ public class Lotto_provide_num implements Lotto_provide {
 			}
 			System.out.print(lottoresult.getLottonum(i) + " ");
 		}
-		
+
 		System.out.println();
 
 		System.out.println("=======================================================");
