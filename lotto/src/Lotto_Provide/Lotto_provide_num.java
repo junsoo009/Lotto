@@ -33,8 +33,8 @@ public class Lotto_provide_num implements Lotto_provide {
 
 		System.out.println(lottolist);
 
-		weinum = lottoanalysis.lotto_weight(lottolist);
-		selectnum = lottoanalysis.lotto_select(lottolist);
+		weinum = lottoanalysis.lotto_weight(lottolist); // 가중치 분석
+		selectnum = lottoanalysis.lotto_select(lottolist); // 하나도 안나온 번호 중 6자리 선택
 
 		for (int i = 1; i < LOTTO; i++) {
 			System.out.print(weinum.getWeight(i) + " ");
@@ -48,6 +48,7 @@ public class Lotto_provide_num implements Lotto_provide {
 		for (int i = 0; i < selectnum.getCnt(); i++) {
 			System.out.print(selectnum.getSelct(i) + " ");
 		}
+		
 		System.out.println();
 		System.out.println("==================  보너스 번호  ==================");
 		for (int i = 0; i < selectnum.getCnt_bns(); i++) {
@@ -62,19 +63,20 @@ public class Lotto_provide_num implements Lotto_provide {
 				System.out.println();
 		}
 		System.out.println();
-		int rot = 0;
-		int lottocnt = 0;
-		int bns = 0;
+		
+		lottoresult = last_provide();
+		
+		return lottoresult;
+	}
 
+	public Lotto_number last_provide() {
+		int rot = 0, lottocnt = 0, bns = 0;
 		for (int i = 1; i <= 45; i++) { // 보너스번호 선택
 
 			if (bns <= weinum.getWeight_bns(i))
 				bns = i;
 		}
-
-		System.out.println("bns = " + bns);
-		System.out.println("===============================================\n");
-
+		
 		while (rot < 6) {
 			sort(selectnum.getSelect(), 0, selectnum.getCnt() - 1);
 

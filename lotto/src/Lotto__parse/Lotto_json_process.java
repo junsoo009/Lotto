@@ -15,7 +15,7 @@ import Lotto_Number.Lotto_number;
 
 public class Lotto_json_process implements Lotto_json {
 
-	private final int turn = 750; // 800회 이후 로또번호 추출
+	private final int turn = 795; // 800회 이후 로또번호 추출
 	private final int LOTTO = 45;
 
 	private JSONArray lottojson;
